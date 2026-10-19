@@ -4,7 +4,7 @@ Final review (10 marks). This file tracks the **core project** only — the syst
 Presentation slides, the final report, the user manual, and the demo video are excluded
 by request.
 
-Last updated: 2026-10-15 · HEAD `a273c25`
+Last updated: 2026-10-20
 
 ---
 
@@ -24,6 +24,7 @@ Last updated: 2026-10-15 · HEAD `a273c25`
 | Object storage (R2) — upload/dedup/download path | ✅ `scripts/r2.ts` |
 | Procedure test coverage | ✅ `scripts/procedures.ts` |
 | MongoDB `$jsonSchema` document validation | ✅ `files`, `folders`, `assets` |
+| Hosting (Vercel + Atlas + R2) | ✅ https://nexdrive-cyan.vercel.app — see §5 |
 
 ---
 
@@ -141,7 +142,36 @@ bun run scripts/analytics-report.ts       # all 6 aggregation pipelines
 bun run scripts/r2.ts                     # full upload/dedup/download/share/GC path (needs R2)
 ```
 
-> MongoDB is **not currently running** — start it with `bun run db:up` before any demo.
+> Local MongoDB must be running as replica set `rs0` before the API starts
+> (`bun run db:up` with podman, or a local `mongod --replSet rs0`).
+
+---
+
+## 5. Hosting
+
+| Piece | Where | Notes |
+|-------|-------|-------|
+| Web (static SPA) | Vercel project `nexdrive` → https://nexdrive-cyan.vercel.app | Root `apps/web`, Vite preset. `apps/web/vercel.json` proxies `/api/*` and `/trpc/*` to the API, so auth cookies stay first-party. No env vars. |
+| API | Vercel project `nexdrive-api` → https://nexdrive-api.vercel.app | Root `apps/server`, Hono preset, Bun runtime. Deploys the self-contained `tsdown` bundle via `apps/server/index.mjs`. |
+| Database | MongoDB Atlas M0 (Mumbai), database `nexdrive` | Seeded with the 127-document sample set and `$jsonSchema` validators. Network access open (`0.0.0.0/0`) for Vercel. |
+| Files | Cloudflare R2 bucket `nexdrive` | CORS allows `http://localhost:3001` and the web URL. |
+
+API env vars on Vercel: `BETTER_AUTH_SECRET`, `BETTER_AUTH_URL` and `CORS_ORIGIN` (both the
+web URL), `MONGODB_URI` (Atlas), and the four `R2_*` values. If the web URL changes, update
+`BETTER_AUTH_URL`, `CORS_ORIGIN`, the proxy targets in `apps/web/vercel.json` only if the
+API URL changes, and the R2 CORS policy.
+
+Deployment gotchas already fixed (see git history): Vercel's file tracing does not follow
+Bun's isolated-linker symlinks (hence the bundle); Bun 1.3 on Vercel throws on
+`v8.startupSnapshot.isBuildingSnapshot` (shimmed in `index.mjs`); any import missing from the
+bundle makes Bun try to auto-install it, which crashes on Vercel's read-only filesystem.
+
+### Known gaps
+
+- [ ] Seeded blobs exist only as metadata — previewing a sample file fails (no bytes in R2).
+- [ ] Local dev and production share one R2 bucket but have separate databases, so a hard
+      delete in one environment can remove bytes the other still references. Use a separate
+      bucket for local work.
 
 ---
 
@@ -150,5 +180,6 @@ bun run scripts/r2.ts                     # full upload/dedup/download/share/GC 
 - [x] R2 configured; `scripts/r2.ts` passes end to end.
 - [x] All procedures in §2 exercised and green.
 - [x] (Optional) `$jsonSchema` validators applied.
+- [x] Deployed and verified on multiple devices.
 - [ ] Full manual walkthrough: log in → upload → dedup → preview → share → trash →
       restore → hard-delete, with the Insights page showing live savings.
