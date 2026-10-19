@@ -67,7 +67,7 @@ runs, the product's core feature is unverified.
 
 ### Acceptance criteria
 
-- [ ] Upload a real file → it appears in the dashboard and previews/downloads.
+- [x] Upload a real file → it appears in the dashboard and previews/downloads.
 - [x] Upload the same file again → `deduplicated: true`, no second PUT, `refCount` = 2.
 - [x] Storage-used increases on both uploads (logical quota) but physical storage does not.
 - [x] Delete both references → the R2 object is removed (blob garbage-collected).
