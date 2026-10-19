@@ -1,3 +1,4 @@
+import { useQueryClient } from "@tanstack/react-query";
 import { Link, useNavigate } from "@tanstack/react-router";
 import { ChevronsUpDown, LogOut, User } from "lucide-react";
 
@@ -29,6 +30,7 @@ interface NavUserProps {
 
 export function NavUser({ user }: NavUserProps) {
   const navigate = useNavigate();
+  const queryClient = useQueryClient();
   const { isMobile } = useSidebar();
 
   const initials = user.name
@@ -42,6 +44,7 @@ export function NavUser({ user }: NavUserProps) {
     authClient.signOut({
       fetchOptions: {
         onSuccess: () => {
+          queryClient.clear();
           navigate({ to: "/" });
         },
       },

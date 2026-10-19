@@ -91,6 +91,7 @@ function AccountPage() {
   const handleSignOut = async () => {
     try {
       await authClient.signOut();
+      queryClient.clear();
       toast.success("Signed out successfully");
       router.navigate({ to: "/login" });
     } catch {

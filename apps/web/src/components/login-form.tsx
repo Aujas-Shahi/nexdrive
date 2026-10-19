@@ -1,4 +1,5 @@
 import { useForm } from "@tanstack/react-form";
+import { useQueryClient } from "@tanstack/react-query";
 import { Link, useNavigate } from "@tanstack/react-router";
 import { HardDrive } from "lucide-react";
 import { useState } from "react";
@@ -24,6 +25,9 @@ export function LoginForm({
 }: React.ComponentProps<"div">) {
   const [isSignUp, setIsSignUp] = useState(false);
   const navigate = useNavigate();
+  // Cached queries belong to whoever was signed in before; drop them so the
+  // new session never sees another user's files or quota.
+  const queryClient = useQueryClient();
 
   const signInForm = useForm({
     defaultValues: {
@@ -38,6 +42,7 @@ export function LoginForm({
         },
         {
           onSuccess: () => {
+            queryClient.clear();
             navigate({ to: "/dashboard" });
             toast.success("Signed in successfully");
           },
@@ -70,6 +75,7 @@ export function LoginForm({
         },
         {
           onSuccess: () => {
+            queryClient.clear();
             navigate({ to: "/dashboard" });
             toast.success("Account created successfully");
           },
