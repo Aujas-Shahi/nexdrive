@@ -105,6 +105,7 @@
       },
       "devDependencies": {
         "@nexdrive/config": "workspace:*",
+        "@types/bun": "catalog:",
         "typescript": "catalog:",
       },
     },
@@ -119,6 +120,7 @@
       },
       "devDependencies": {
         "@nexdrive/config": "workspace:*",
+        "@types/bun": "catalog:",
         "typescript": "catalog:",
       },
     },
