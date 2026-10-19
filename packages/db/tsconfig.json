@@ -5,6 +5,9 @@
     "declarationMap": true,
     "sourceMap": true,
     "outDir": "dist",
-    "composite": true
+    "composite": true,
+    // The seed script uses the `Bun` global. Declared here, not in the shared
+    // base, so it resolves against this package's own @types/bun.
+    "types": ["bun"]
   }
 }
