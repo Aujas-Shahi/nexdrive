@@ -84,9 +84,8 @@ async function main(): Promise<void> {
 
   console.log("\n=== NexDrive $jsonSchema validation demo ===\n");
 
-  const collections = await db
-    .listCollections({ name: { $in: Object.keys(VALIDATORS) } })
-    .toArray();
+  // Unfiltered: Atlas shared tiers reject `$in` filters on listCollections.
+  const collections = await db.listCollections().toArray();
   for (const name of Object.keys(VALIDATORS)) {
     const info = collections.find((c) => c.name === name);
     const options = info && "options" in info ? info.options : undefined;
