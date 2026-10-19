@@ -1,0 +1,26 @@
+{
+  "name": "@nexdrive/db",
+  "type": "module",
+  "exports": {
+    ".": {
+      "default": "./src/index.ts"
+    },
+    "./*": {
+      "default": "./src/*.ts"
+    }
+  },
+  "scripts": {
+    "check-types": "tsc -b",
+    "db:seed": "bun run src/seed.ts"
+  },
+  "devDependencies": {
+    "@nexdrive/config": "workspace:*",
+    "@types/bun": "catalog:",
+    "typescript": "catalog:"
+  },
+  "dependencies": {
+    "dotenv": "catalog:",
+    "mongodb": "catalog:",
+    "mongoose": "catalog:"
+  }
+}

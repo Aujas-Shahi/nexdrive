@@ -1,0 +1,46 @@
+{
+  "name": "nexdrive",
+  "private": true,
+  "workspaces": {
+    "packages": [
+      "apps/*",
+      "packages/*"
+    ],
+    "catalog": {
+      "dotenv": "^18.0.3",
+      "zod": "^4.6.5",
+      "typescript": "^7.0.2",
+      "@types/bun": "^1.4.2",
+      "hono": "^4.13.8",
+      "@trpc/server": "^11.19.0",
+      "better-auth": "^1.7.5",
+      "@trpc/client": "^11.19.0",
+      "mongoose": "^9.10.2",
+      "mongodb": "^7.6.0"
+    }
+  },
+  "type": "module",
+  "scripts": {
+    "dev": "turbo dev",
+    "build": "turbo build",
+    "check-types": "turbo check-types",
+    "dev:native": "turbo -F native dev",
+    "dev:web": "turbo -F web dev",
+    "dev:server": "turbo -F server dev",
+    "db:up": "bash scripts/mongo.sh up",
+    "db:down": "bash scripts/mongo.sh down",
+    "db:status": "bash scripts/mongo.sh status",
+    "db:seed": "turbo -F @nexdrive/db db:seed"
+  },
+  "dependencies": {
+    "dotenv": "catalog:",
+    "zod": "catalog:"
+  },
+  "devDependencies": {
+    "@trpc/client": "^11.19.0",
+    "@types/bun": "catalog:",
+    "turbo": "^2.11.3",
+    "typescript": "catalog:"
+  },
+  "packageManager": "bun@1.3.5"
+}

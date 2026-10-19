@@ -1,0 +1,26 @@
+{
+  "name": "@nexdrive/auth",
+  "type": "module",
+  "exports": {
+    ".": {
+      "default": "./src/index.ts"
+    },
+    "./*": {
+      "default": "./src/*.ts"
+    }
+  },
+  "scripts": {
+    "check-types": "tsc -b"
+  },
+  "devDependencies": {
+    "typescript": "catalog:",
+    "@nexdrive/config": "workspace:*"
+  },
+  "dependencies": {
+    "better-auth": "catalog:",
+    "dotenv": "catalog:",
+    "mongodb": "catalog:",
+    "zod": "catalog:",
+    "@nexdrive/db": "workspace:*"
+  }
+}
