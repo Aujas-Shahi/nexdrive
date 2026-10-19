@@ -1,6 +1,11 @@
 {
   "$schema": "https://openapi.vercel.sh/vercel.json",
   "bunVersion": "1.x",
+  "framework": "vite",
   "outputDirectory": "dist/client",
-  "rewrites": [{ "source": "/(.*)", "destination": "/_shell.html" }]
+  "rewrites": [
+    { "source": "/api/:path*", "destination": "https://nexdrive-api.vercel.app/api/:path*" },
+    { "source": "/trpc/:path*", "destination": "https://nexdrive-api.vercel.app/trpc/:path*" },
+    { "source": "/(.*)", "destination": "/_shell.html" }
+  ]
 }
