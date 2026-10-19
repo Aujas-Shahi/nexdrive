@@ -21,7 +21,7 @@ Last updated: 2026-10-15 · HEAD `a273c25`
 | Responsive UI (all screens) | ✅ Done |
 | Sample dataset (127 documents) | ✅ Done |
 | Typecheck / build | ✅ 5/5 packages, 2/2 builds |
-| **Object storage (R2) — upload/dedup/download path** | ❌ **Unproven — blocker** |
+| Object storage (R2) — upload/dedup/download path | ✅ `scripts/r2.ts` |
 | Procedure test coverage | ✅ `scripts/procedures.ts` |
 | MongoDB `$jsonSchema` document validation | ✅ `files`, `folders`, `assets` |
 
@@ -68,11 +68,11 @@ runs, the product's core feature is unverified.
 ### Acceptance criteria
 
 - [ ] Upload a real file → it appears in the dashboard and previews/downloads.
-- [ ] Upload the same file again → `deduplicated: true`, no second PUT, `refCount` = 2.
-- [ ] Storage-used increases on both uploads (logical quota) but physical storage does not.
-- [ ] Delete both references → the R2 object is removed (blob garbage-collected).
-- [ ] Public share link downloads the file without authentication.
-- [ ] Avatar upload and display work.
+- [x] Upload the same file again → `deduplicated: true`, no second PUT, `refCount` = 2.
+- [x] Storage-used increases on both uploads (logical quota) but physical storage does not.
+- [x] Delete both references → the R2 object is removed (blob garbage-collected).
+- [x] Public share link downloads the file without authentication.
+- [x] Avatar upload and display work (API; check the UI by hand).
 
 ---
 
@@ -138,7 +138,7 @@ bun run scripts/smoke.ts                  # auth, quota, folder CRUD, trash, wri
 bun run scripts/procedures.ts             # rename, move, circular guard, share, trash, hard delete
 bun run scripts/verify-seed.ts            # log in as Alice, read quota/stats/listings
 bun run scripts/analytics-report.ts       # all 6 aggregation pipelines
-bun run test-backend.ts                   # full upload/dedup/share path (needs R2)
+bun run scripts/r2.ts                     # full upload/dedup/download/share/GC path (needs R2)
 ```
 
 > MongoDB is **not currently running** — start it with `bun run db:up` before any demo.
@@ -147,7 +147,7 @@ bun run test-backend.ts                   # full upload/dedup/share path (needs 
 
 ## Definition of done for the core (Review 3)
 
-- [ ] R2 configured; `test-backend.ts` passes end to end.
+- [x] R2 configured; `scripts/r2.ts` passes end to end.
 - [x] All procedures in §2 exercised and green.
 - [x] (Optional) `$jsonSchema` validators applied.
 - [ ] Full manual walkthrough: log in → upload → dedup → preview → share → trash →
