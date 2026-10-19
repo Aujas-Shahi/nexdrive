@@ -23,7 +23,7 @@ Last updated: 2026-10-15 · HEAD `a273c25`
 | Typecheck / build | ✅ 5/5 packages, 2/2 builds |
 | **Object storage (R2) — upload/dedup/download path** | ❌ **Unproven — blocker** |
 | Procedure test coverage | ✅ `scripts/procedures.ts` |
-| MongoDB `$jsonSchema` document validation | ⚠️ Optional, not done |
+| MongoDB `$jsonSchema` document validation | ✅ `files`, `folders`, `assets` |
 
 ---
 
@@ -107,9 +107,9 @@ scripts to cover them against the seeded dataset (Alice).
 We validate at the Mongoose layer only. MongoDB collection validators are a listed
 MongoDB deliverable.
 
-- [ ] Add `$jsonSchema` validators for `files`, `folders`, `assets` (required fields,
+- [x] Add `$jsonSchema` validators for `files`, `folders`, `assets` (required fields,
       types, enums where sensible).
-- [ ] Apply them in a script (or the seed) so the demo can show a rejected malformed
+- [x] Apply them in a script (or the seed) so the demo can show a rejected malformed
       insert.
 
 ---
@@ -129,7 +129,8 @@ bun install
 bun run check-types                       # 5/5 packages
 bun run build                             # web + server
 bun run db:up                             # podman replica set rs0
-bun run db:seed                           # 127 documents
+bun run db:seed                           # 127 documents + $jsonSchema validators
+bun run db:validation-demo                # malformed inserts rejected by MongoDB
 bun run dev:server                        # API on :3000
 
 # in another shell
@@ -148,6 +149,6 @@ bun run test-backend.ts                   # full upload/dedup/share path (needs 
 
 - [ ] R2 configured; `test-backend.ts` passes end to end.
 - [x] All procedures in §2 exercised and green.
-- [ ] (Optional) `$jsonSchema` validators applied.
+- [x] (Optional) `$jsonSchema` validators applied.
 - [ ] Full manual walkthrough: log in → upload → dedup → preview → share → trash →
       restore → hard-delete, with the Insights page showing live savings.

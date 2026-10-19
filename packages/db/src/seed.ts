@@ -20,6 +20,7 @@ import { Types } from "mongoose";
 import { connectDB, getDb } from "./connection";
 import { DEFAULT_RATE_LIMIT } from "./constants";
 import { ensureIndexes } from "./indexes";
+import { ensureValidators } from "./validators";
 
 // Load the server env if MONGODB_URI isn't already in the environment.
 dotenv.config({ path: fileURLToPath(new URL("../../../apps/server/.env", import.meta.url)) });
@@ -268,6 +269,10 @@ async function seed(): Promise<void> {
   // Build the index set (compound, partial-unique, TTL) up front so the demo
   // can show it exists without waiting on lazy index creation.
   await ensureIndexes();
+
+  // Attach the $jsonSchema validators before inserting, so the sample data is
+  // itself checked against them.
+  await ensureValidators();
 
   // --- users + credential accounts -----------------------------------------
   const userIds = new Map<UserKey, Types.ObjectId>();

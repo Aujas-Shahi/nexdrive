@@ -19,6 +19,9 @@
     },
     "db:seed": {
       "cache": false
+    },
+    "db:validation-demo": {
+      "cache": false
     }
   }
 }

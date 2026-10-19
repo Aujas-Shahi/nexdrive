@@ -11,7 +11,8 @@
   },
   "scripts": {
     "check-types": "tsc -b",
-    "db:seed": "bun run src/seed.ts"
+    "db:seed": "bun run src/seed.ts",
+    "db:validation-demo": "bun run src/validation-demo.ts"
   },
   "devDependencies": {
     "@nexdrive/config": "workspace:*",

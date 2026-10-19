@@ -30,7 +30,8 @@
     "db:up": "bash scripts/mongo.sh up",
     "db:down": "bash scripts/mongo.sh down",
     "db:status": "bash scripts/mongo.sh status",
-    "db:seed": "turbo -F @nexdrive/db db:seed"
+    "db:seed": "turbo -F @nexdrive/db db:seed",
+    "db:validation-demo": "turbo -F @nexdrive/db db:validation-demo"
   },
   "dependencies": {
     "dotenv": "catalog:",
