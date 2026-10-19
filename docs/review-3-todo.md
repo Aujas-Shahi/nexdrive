@@ -22,7 +22,7 @@ Last updated: 2026-10-15 · HEAD `a273c25`
 | Sample dataset (127 documents) | ✅ Done |
 | Typecheck / build | ✅ 5/5 packages, 2/2 builds |
 | **Object storage (R2) — upload/dedup/download path** | ❌ **Unproven — blocker** |
-| **Procedure test coverage** | ⚠️ ~10 procedures never exercised |
+| Procedure test coverage | ✅ `scripts/procedures.ts` |
 | MongoDB `$jsonSchema` document validation | ⚠️ Optional, not done |
 
 ---
@@ -83,22 +83,22 @@ scripts to cover them against the seeded dataset (Alice).
 
 ### Untested procedures
 
-- [ ] `renameFile`
-- [ ] `moveFile`, `moveFiles`
-- [ ] `moveFolder`, `moveFolders`
-- [ ] `moveFolder` circular-reference guard (moving a folder into its own descendant → `BAD_REQUEST`)
-- [ ] file-level `moveToTrash` + `restoreFromTrash`
-- [ ] `permanentlyDelete` (single file)
-- [ ] `permanentlyDeleteFolder` (recursive, frees bytes)
-- [ ] `deleteFolder` (empty-only guard: non-empty folder → `PRECONDITION_FAILED`)
-- [ ] `togglePublic` + `getPublicFile` (no R2 needed — `getPublicFile` only presigns)
-- [ ] `getFile` (presigns; object need not exist)
+- [x] `renameFile`
+- [x] `moveFile`, `moveFiles`
+- [x] `moveFolder`, `moveFolders`
+- [x] `moveFolder` circular-reference guard (moving a folder into its own descendant → `BAD_REQUEST`)
+- [x] file-level `moveToTrash` + `restoreFromTrash`
+- [x] `permanentlyDelete` (single file)
+- [x] `permanentlyDeleteFolder` (recursive, frees bytes)
+- [x] `deleteFolder` (empty-only guard: non-empty folder → `PRECONDITION_FAILED`)
+- [x] `togglePublic` + `getPublicFile` (no R2 needed — `getPublicFile` only presigns)
+- [x] `getFile` (presigns; object need not exist)
 
 ### Acceptance criteria
 
-- [ ] A single script exercises every procedure above and asserts the expected result,
+- [x] A single script (`scripts/procedures.ts`) exercises every procedure above and asserts the expected result,
       including the two error guards (circular move, non-empty delete).
-- [ ] `bun run scripts/smoke.ts` stays green.
+- [x] `bun run scripts/smoke.ts` stays green.
 
 ---
 
@@ -134,6 +134,7 @@ bun run dev:server                        # API on :3000
 
 # in another shell
 bun run scripts/smoke.ts                  # auth, quota, folder CRUD, trash, write rate limit
+bun run scripts/procedures.ts             # rename, move, circular guard, share, trash, hard delete
 bun run scripts/verify-seed.ts            # log in as Alice, read quota/stats/listings
 bun run scripts/analytics-report.ts       # all 6 aggregation pipelines
 bun run test-backend.ts                   # full upload/dedup/share path (needs R2)
@@ -146,7 +147,7 @@ bun run test-backend.ts                   # full upload/dedup/share path (needs 
 ## Definition of done for the core (Review 3)
 
 - [ ] R2 configured; `test-backend.ts` passes end to end.
-- [ ] All procedures in §2 exercised and green.
+- [x] All procedures in §2 exercised and green.
 - [ ] (Optional) `$jsonSchema` validators applied.
 - [ ] Full manual walkthrough: log in → upload → dedup → preview → share → trash →
       restore → hard-delete, with the Insights page showing live savings.
